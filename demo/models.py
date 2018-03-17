@@ -6,7 +6,7 @@ class Author(models.Model):
 
     name = models.CharField(max_length=32)
     # def __init__(self):
-    #     return selif.name
+    #     return self.name
     # class Meta:
     #     verbose_name = '作者表'
     #     verbose_name_plural = verbose_name
