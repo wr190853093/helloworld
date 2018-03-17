@@ -25,7 +25,7 @@ for c in range(1,len(names)):
     name = author_table.col(0)[c].value
     author = Author.objects.get(name=name)
     sex = 1
-    if author_table.col(1)[c].value=='男':
+    if author_table.col(1)[c].value== u'男':
         sex = 0
     phone = str.split(str(author_table.col(4)[c].value),'.')[0]
     AuthorDetails.objects.get_or_create(
@@ -60,7 +60,7 @@ for c in range(1,book_table.nrows):
         publisher_name = Publisher.objects.get(name=publisher)
     except Exception as e:
         print e.message
-        print '未找到作者姓名为%s的数据' %i
+        print '未找到出版社为%s的数据' % publisher_name
     else:
         publication_data = xldate_as_datetime(book_table.col(3)[c].value,0)
         price = book_table.col(4)[c].value
@@ -80,7 +80,9 @@ for c in range(1,book_table.nrows):
             try:
                 author = Author.objects.get(name=i)
                 book_name.author.add(author)
-                book_name.save()
+                # author = Author.objects.filter(name=i)[]
+                # book_name.author = author #会更新，不新增，只能创建一个关系
+                # book_name.save()
             except Exception as e:
                 print e.message
-                print '未找到作者姓名为%s的数据' %i
+                print '未找到作者姓名为%s的数据' % i
