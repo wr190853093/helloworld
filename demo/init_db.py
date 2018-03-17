@@ -80,9 +80,11 @@ for c in range(1,book_table.nrows):
             try:
                 author = Author.objects.get(name=i)
                 book_name.author.add(author)
-                # author = Author.objects.filter(name=i)[]
-                # book_name.author = author #会更新，不新增，只能创建一个关系
-                # book_name.save()
+                # 会更新，不新增，只能创建一个关系
+                # author = Author.objects.filter(name=i)
+                # for a in author:
+                #     book_name.author = a
+                #     book_name.save()
             except Exception as e:
                 print e.message
                 print '未找到作者姓名为%s的数据' % i
