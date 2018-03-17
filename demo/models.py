@@ -5,8 +5,8 @@ from django.db import models
 class Author(models.Model):
 
     name = models.CharField(max_length=32)
-    # def __init__(self):
-    #     return self.name
+    def __unicode__(self):
+        return self.name
     # class Meta:
     #     verbose_name = '作者表'
     #     verbose_name_plural = verbose_name
@@ -24,13 +24,19 @@ class Publisher(models.Model):
     address = models.CharField(max_length=50)
     city = models.CharField(max_length=30)
     website = models.URLField()
+    def __unicode__(self):
+        return self.name
 
 class Book(models.Model):
+
     title = models.CharField(max_length=100)
     publication_data = models.DateField()
     publisher = models.ForeignKey(Publisher)
     author = models.ManyToManyField(Author)
     price = models.FloatField()
+
+    def __unicode__(self):
+        return self.title
 
 
 class User(models.Model):
