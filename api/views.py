@@ -1,5 +1,7 @@
 #coding:utf-8
 from django.shortcuts import render,HttpResponse
+from models import *
+
 
 # Create your views here.
 
@@ -29,6 +31,7 @@ def register(request):
 5、校验签名正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Event.object.create
 '''
 def add_event(request):
     response = HttpResponse()
@@ -44,6 +47,7 @@ def add_event(request):
 4、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Event.object.filter,all
 '''
 def get_eventlist(request):
     response = HttpResponse()
@@ -59,6 +63,7 @@ def get_eventlist(request):
 4、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Event.object.filter.value
 '''
 def get_eventdetail(request):
     response = HttpResponse()
@@ -75,6 +80,7 @@ def get_eventdetail(request):
 5、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Event.object.update
 '''
 def set_status(request):
     response = HttpResponse()
@@ -92,6 +98,9 @@ def set_status(request):
 6、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Event.object.filter
+          Guest.object.create
+          Event.guest.add()
 '''
 def add_guest(request):
     response = HttpResponse()
@@ -107,6 +116,8 @@ def add_guest(request):
 4、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：Guest.object.filter
+          Event.object.value
 '''
 def get_guestlist(request):
     response = HttpResponse()
@@ -123,6 +134,7 @@ def get_guestlist(request):
 5、校验签名是否正确
 
 校验结果，按接口文档返回对应参数
+数据操作：原生sql
 '''
 def sign(request):
     response = HttpResponse()
