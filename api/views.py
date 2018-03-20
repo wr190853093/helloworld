@@ -1,6 +1,7 @@
 #coding:utf-8
 from django.shortcuts import render,HttpResponse
-
+import datetime
+from models import *
 # Create your views here.
 
 #验证签名
@@ -32,6 +33,46 @@ def register(request):
 '''
 def add_event(request):
     response = HttpResponse()
+    error_code = '1'
+
+    if request.method == 'POST':
+        title = request.POST.GET('title', None)
+        limit = request.POST.GET('limit',None)
+        address = request.POST.GET('address', None)
+        status = request.POST.GET('status',0)
+        time = request.POST.GET('time',None)
+        if title and address and time:
+            try:
+                Event.objects.get(title=title)
+                error_code = '10002'
+            except Exception as e:
+                print e
+                try:
+                    time = datetime(time)
+                    status = int(status)
+                    limit = int(limit)
+                    if status  in (0, 1, 2):
+                        sign =pass
+                        if is_sign(sign):
+                            try:
+                                Event.objects.create(title=title,limit=limit,
+                                                    address=address,status=status,time=time)
+                                error_code = '0'
+                            except Exception as e:
+                                print e
+                                error_code = '10098' #数据操作异常
+
+                        else:
+                            error_code = '10011'
+                    else:
+                        error_code = '10003'
+                except Exception as e:
+                    print e
+                    error_code = '10098' #数据类型错误
+        else:
+            error_code = '10001'
+    else:
+        error_code = '10099' #请求类型错误
 
     return response
 
