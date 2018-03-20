@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib import auth
 from init_db.models import *
 import method
+from models import *
 # Create your views here.
 
 def index(request):
@@ -17,6 +18,7 @@ def index(request):
             return render(request, 'home.html', {'info': info})
     else:
         return render(request, 'login.html')
+
         # return HttpResponse("{'info':'123'}",content_type='json')
         # return render(request, 'login.html')
         # 增
