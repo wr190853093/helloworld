@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import auth
-from init_db.models import *
+
 import method
 from models import *
 # Create your views here.
