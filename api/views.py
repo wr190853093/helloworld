@@ -2,6 +2,7 @@
 from django.shortcuts import render,HttpResponse
 from models import *
 import datetime
+import json
 
 # Create your views here.
 
@@ -54,12 +55,13 @@ def add_event(request):
                     status = int(status)
                     limit = int(limit)
                     if status  in (0, 1, 2):
-                        sign =pass
+                        sign pass #签名验证
                         if is_sign(sign):
                             try:
                                 Event.objects.create(title=title,limit=limit,
                                                     address=address,status=status,time=time)
                                 error_code = '0'
+                                data = {}
                             except Exception as e:
                                 print e
                                 error_code = '10098' #数据操作异常
@@ -91,8 +93,37 @@ def add_event(request):
 '''
 def get_eventlist(request):
     response = HttpResponse()
+    error_code = '1'
+    message = ''
+    sign =pass
+    event_list = []
+    if request.method == 'GET':
+        if is_sign(sign):
+            title = request.GET.get('title',None)
+            try:
+                event_list = Event.objects.filter(title__contains=title).values('id', 'title', 'status')
+                if event_list:
+                    error_code = '0'
+                    event_list = list(event_list)
+                else:
+                    error_code = u'10004' # 未查询到会议信息
+                    message = u'未查询到会议信息'
 
-    return response
+            except Exception as e:
+                print e
+                error_code = '10098' #数据操作异常
+                message = u'数据操作异常'
+
+        else:
+            error_code = '10011'
+            message = u'数据操作异常'
+
+    else:
+        error_code = '10099' #请求类型错误
+        message = u'请求类型错误'
+
+    data = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message})
+    return response(data)
 
 #查询会议详细信息
 '''
