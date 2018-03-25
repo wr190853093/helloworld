@@ -66,6 +66,7 @@ def home(request):
 def bugs(request):
 
     month = request.GET.get('month',None)
+
     if month:
         try:
             month = int(month)
@@ -100,6 +101,7 @@ def login(request):
         is_save = request.POST.get('is_save')
         # username = request.GET.get('username', None)
         # pwd = request.GET.get('getpassword', None)
+
 
         if username and pwd :
 

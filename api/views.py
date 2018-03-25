@@ -3,6 +3,7 @@ from django.shortcuts import render,HttpResponse
 from models import *
 import datetime
 import json
+import random,string
 
 # Create your views here.
 
@@ -10,8 +11,34 @@ import json
 '''
 根据传的参数进行解密，判断签名是否正确
 '''
-def is_sign(sign):
+def is_sign(request):
     flag = False
+    data = []
+    para = {}
+    if request.method == 'GET':
+        para =request.GET.items()
+        try:
+            para.pop('username')
+            para.pop('sign')
+        except :
+            print Exception
+        else:
+            for k,v in para.items():
+                data.append(k+'='+v)
+            data.sort()
+            result = '&'.join(data)
+    elif request.method == 'POST':
+        for k in request.POST:
+            if k == 'username' or k == 'sing':
+                continue
+            else:
+                para[k] = request.POST.get(k)
+        for k,v in para.items():
+            data.append(k+'='+v)
+        data.sort()
+        result = '&'.join(data)
+        salt = ''.join(random.sample(string.ascii_letters + string.digits, 5))
+
 
     return flag
 
@@ -37,6 +64,8 @@ def register(request):
 def add_event(request):
     response = HttpResponse()
     error_code = '1'
+    message = ''
+    data = {}
 
     if request.method == 'POST':
         title = request.POST.GET('title', None)
@@ -48,6 +77,7 @@ def add_event(request):
             try:
                 Event.objects.get(title=title)
                 error_code = '10002'
+                message = u'title已存在'
             except Exception as e:
                 print e
                 try:
@@ -55,30 +85,38 @@ def add_event(request):
                     status = int(status)
                     limit = int(limit)
                     if status  in (0, 1, 2):
-                        sign pass #签名验证
-                        if is_sign(sign):
+
+                        if is_sign(request):
                             try:
-                                Event.objects.create(title=title,limit=limit,
+                                event = Event.objects.create(title=title,limit=limit,
                                                     address=address,status=status,time=time)
                                 error_code = '0'
-                                data = {}
+                                data = {'event_id':event.id, 'status':data.status}
+                                message = u'会议添加成功。'
                             except Exception as e:
                                 print e
                                 error_code = '10098' #数据操作异常
+                                message = u'数据操作异常'
 
                         else:
                             error_code = '10011'
+                            message = '签名错误'
                     else:
                         error_code = '10003'
+                        message = u'签名错误'
                 except Exception as e:
                     print e
                     error_code = '10098' #数据类型错误
+                    message = u'数据类型错误'
         else:
             error_code = '10001'
+            message = u'缺少必要参数'
     else:
         error_code = '10099' #请求类型错误
+        message = u'请求类型错误'
 
-    return response
+    js = json.dumps({"error_code":error_code, 'data':data, "message":message})
+    return response(js)
 
 #查询会议列表
 '''
@@ -95,10 +133,10 @@ def get_eventlist(request):
     response = HttpResponse()
     error_code = '1'
     message = ''
-    sign =pass
+
     event_list = []
     if request.method == 'GET':
-        if is_sign(sign):
+        if is_sign(request):
             title = request.GET.get('title',None)
             try:
                 event_list = Event.objects.filter(title__contains=title).values('id', 'title', 'status')
@@ -122,8 +160,8 @@ def get_eventlist(request):
         error_code = '10099' #请求类型错误
         message = u'请求类型错误'
 
-    data = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message})
-    return response(data)
+    js = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message})
+    return response(js)
 
 #查询会议详细信息
 '''
