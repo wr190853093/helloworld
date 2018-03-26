@@ -3,9 +3,12 @@ from django.shortcuts import render,HttpResponse
 from models import *
 import datetime
 import json
+
 import random,string
 
 # Create your views here.
+def index(request):
+    return render(request, 'index.html')
 
 #验证签名
 '''
@@ -13,33 +16,33 @@ import random,string
 '''
 def is_sign(request):
     flag = False
-    data = []
-    para = {}
-    if request.method == 'GET':
-        para =request.GET.items()
-        try:
-            para.pop('username')
-            para.pop('sign')
-        except :
-            print Exception
-        else:
-            for k,v in para.items():
-                data.append(k+'='+v)
-            data.sort()
-            result = '&'.join(data)
-    elif request.method == 'POST':
-        for k in request.POST:
-            if k == 'username' or k == 'sing':
-                continue
-            else:
-                para[k] = request.POST.get(k)
-        for k,v in para.items():
-            data.append(k+'='+v)
-        data.sort()
-        result = '&'.join(data)
-        salt = ''.join(random.sample(string.ascii_letters + string.digits, 5))
+    # data = []
+    # para = {}
+    # if request.method == 'GET':
+    #     para =request.GET.items()
+    #     try:
+    #         para.pop('username')
+    #         para.pop('sign')
+    #     except :
+    #         print Exception
+    #     else:
+    #         for k,v in para.items():
+    #             data.append(k+'='+v)
+    #         data.sort()
+    #         result = '&'.join(data)
+    # elif request.method == 'POST':
+    #     for k in request.POST:
+    #         if k == 'username' or k == 'sing':
+    #             continue
+    #         else:
+    #             para[k] = request.POST.get(k)
+    #     for k,v in para.items():
+    #         data.append(k+'='+v)
+    #     data.sort()
+    #     result = '&'.join(data)
+    #     salt = ''.join(random.sample(string.ascii_letters + string.digits, 5))
 
-
+    flag = True
     return flag
 
 
@@ -62,17 +65,17 @@ def register(request):
 数据操作：Event.object.create
 '''
 def add_event(request):
-    response = HttpResponse()
+    # response = HttpResponse()
     error_code = '1'
     message = ''
     data = {}
 
     if request.method == 'POST':
-        title = request.POST.GET('title', None)
-        limit = request.POST.GET('limit',None)
-        address = request.POST.GET('address', None)
-        status = request.POST.GET('status',0)
-        time = request.POST.GET('time',None)
+        title = request.POST.get('title', None)
+        limit = request.POST.get('limit', None)
+        address = request.POST.get('address', None)
+        status = request.POST.get('status', 0)
+        time = request.POST.get('time', None)
         if title and address and time:
             try:
                 Event.objects.get(title=title)
@@ -81,17 +84,17 @@ def add_event(request):
             except Exception as e:
                 print e
                 try:
-                    time = datetime(time)
+                    time = datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
                     status = int(status)
                     limit = int(limit)
-                    if status  in (0, 1, 2):
+                    if status in (0, 1, 2):
 
                         if is_sign(request):
                             try:
-                                event = Event.objects.create(title=title,limit=limit,
-                                                    address=address,status=status,time=time)
+                                event = Event.objects.create(title=title, limit=limit,
+                                                    address=address, status=status, time=time)
                                 error_code = '0'
-                                data = {'event_id':event.id, 'status':data.status}
+                                data = {'event_id':event.id, 'status':event.status}
                                 message = u'会议添加成功。'
                             except Exception as e:
                                 print e
@@ -116,7 +119,8 @@ def add_event(request):
         message = u'请求类型错误'
 
     js = json.dumps({"error_code":error_code, 'data':data, "message":message})
-    return response(js)
+    print js
+    return HttpResponse(js)
 
 #查询会议列表
 '''
@@ -130,20 +134,20 @@ def add_event(request):
 数据操作：Event.object.filter,all
 '''
 def get_eventlist(request):
-    response = HttpResponse()
+
     error_code = '1'
     message = ''
-
     event_list = []
     if request.method == 'GET':
         if is_sign(request):
-            title = request.GET.get('title',None)
+            title = request.GET.get('title', None)
             try:
                 event_list = Event.objects.filter(title__contains=title).values('id', 'title', 'status')
                 if event_list:
                     error_code = '0'
                     event_list = list(event_list)
                 else:
+                    event_list = list(event_list)
                     error_code = u'10004' # 未查询到会议信息
                     message = u'未查询到会议信息'
 
@@ -154,14 +158,14 @@ def get_eventlist(request):
 
         else:
             error_code = '10011'
-            message = u'数据操作异常'
+            message = u'签名错误'
 
     else:
         error_code = '10099' #请求类型错误
         message = u'请求类型错误'
 
     js = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message})
-    return response(js)
+    return HttpResponse(js)
 
 #查询会议详细信息
 '''

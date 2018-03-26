@@ -1,6 +1,7 @@
 from django.conf.urls import include, url
 
 urlpatterns = [
+    url(r'^index/', 'api.views.index'),
     url(r'^register/', 'api.views.register'),
     url(r'^add_event/', 'api.views.add_event'),
     url(r'^get_eventlist/', 'api.views.get_eventlist'),
