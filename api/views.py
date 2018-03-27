@@ -118,7 +118,7 @@ def add_event(request):
         error_code = '10099' #请求类型错误
         message = u'请求类型错误'
 
-    js = json.dumps({"error_code":error_code, 'data':data, "message":message})
+    js = json.dumps({"error_code":error_code, 'data':data, "message":message},ensure_ascii=False)
     print js
     return HttpResponse(js)
 
@@ -164,7 +164,7 @@ def get_eventlist(request):
         error_code = '10099' #请求类型错误
         message = u'请求类型错误'
 
-    js = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message})
+    js = json.dumps({'event_list':event_list, 'error_code': error_code, 'message': message},ensure_ascii=False)
     return HttpResponse(js)
 
 #查询会议详细信息
@@ -179,9 +179,34 @@ def get_eventlist(request):
 数据操作：Event.object.filter.value
 '''
 def get_eventdetail(request):
-    response = HttpResponse()
+    event_detail=[]
+    if request.method == 'GET':
+        if is_sign(request):
+            id = request.GET.get('id', None)
+            if id:
+                try:
+                    event_detail = Event.objects.values('id', 'title', 'status',
+                                                        'limit', 'address', 'time').get(id=id)
+                    start_time = datetime.date.strftime(event_detail['time'], '%Y-%m-%d')
+                    event_detail.pop('time')
 
-    return response
+                    error_code = '0'
+                    message = ''
+                except Exception as e:
+                    print e
+                    error_code='10004'
+                    message = u'未查询到会议信息'
+            else:
+                error_code = '10001'
+                message = u'缺少必填参数'
+        else:
+            error_code = '10011'
+            message = u'签名错误'
+    else:
+        error_code = '10099'  # 请求类型错误
+        message = u'请求类型错误'
+    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message},ensure_ascii=False)
+    return HttpResponse(js)
 
 #修改会议状态
 '''

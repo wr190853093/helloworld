@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'demo',
     'demo2',
     'api',
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (

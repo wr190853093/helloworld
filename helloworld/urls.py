@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^demo/', include('demo.urls')),
     url(r'^demo2/', include('demo2.urls')),
-    url(r'^api/', include('api.urls'))
+    url(r'^api/', include('api.urls')),
+    url(r'^api-ui/', include('rest_framework.urls')),
 ]
