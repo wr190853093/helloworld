@@ -221,9 +221,44 @@ def get_eventdetail(request):
 数据操作：Event.object.update
 '''
 def set_status(request):
-    response = HttpResponse()
+    error_code = ''
+    message = ''
+    if request.method == 'POST':
+        if is_sign(request):
+            id = request.POST.get('id', None)
+            status = request.POST.get('status', None)
+            if id and status:
+                try:
+                    status = int(status)
+                    if status in (0, 1, 2):
+                        try:
+                            event = Event.objects.get(id=id)
+                            event.status = status
+                            event.save()
+                            error_code = '0'
 
-    return response
+                        except:
+                            error_code = '10004'
+                            message =u'未查询到会议信息'
+                    else:
+                        error_code = '10003'
+                        message = u'status类型不存在'
+                except Exception as e:
+                    print e
+                    error_code = '10098'
+                    message = u'数据类型错误'
+            else:
+                error_code = '10001'
+                message = u'缺少必填参数'
+        else:
+            error_code = '10011'
+            message = u'签名错误'
+    else:
+        error_code = '10099'
+        message = u'请求类型错误'
+
+    js = json.dumps({'error_code': error_code, 'message': message}, ensure_ascii=False)
+    return HttpResponse(js)
 
 #添加嘉宾
 '''
@@ -241,9 +276,11 @@ def set_status(request):
           Event.guest.add()
 '''
 def add_guest(request):
-    response = HttpResponse()
+    error_code = ''
+    message = ''
 
-    return response
+    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
+    return HttpResponse(js)
 
 #查询会议嘉宾
 '''
@@ -258,9 +295,11 @@ def add_guest(request):
           Event.object.value
 '''
 def get_guestlist(request):
-    response = HttpResponse()
+    error_code = ''
+    message = ''
 
-    return response
+    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
+    return HttpResponse(js)
 
 # 嘉宾签到
 '''
@@ -275,6 +314,8 @@ def get_guestlist(request):
 数据操作：原生sql
 '''
 def sign(request):
-    response = HttpResponse()
+    error_code = ''
+    message = ''
 
-    return response
+    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
+    return HttpResponse(js)
