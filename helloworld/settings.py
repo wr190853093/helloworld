@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'demo',
     'demo2',
     'api',
-    'rest_framework'
+    'rest_framework.authtoken',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -128,3 +128,13 @@ LOGGING = {
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+REST_FRAMEWORK = {
+            'DEFAULT_PERMISSION_CLASSES': (
+            'rest_framework.permissions.IsAuthenticated',
+            ),
+            'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.TokenAuthentication',
+            ),
+            'PAGINATE_BY': 10
+}

@@ -1,12 +1,21 @@
 #coding:utf-8
 from django.shortcuts import render,HttpResponse
+from django.http import JsonResponse
 from models import *
+from rest_framework.decorators import api_view
 import datetime
 import json
-
-import random,string
-
+import base64
+from django.contrib import auth
+from rest_framework.authtoken.models import Token
+import hashlib
+from django.contrib.auth.models import *
 # Create your views here.
+
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+
 def index(request):
     return render(request, 'index.html')
 
@@ -14,43 +23,79 @@ def index(request):
 '''
 根据传的参数进行解密，判断签名是否正确
 '''
+
 def is_sign(request):
     flag = False
-    # data = []
-    # para = {}
-    # if request.method == 'GET':
-    #     para =request.GET.items()
-    #     try:
-    #         para.pop('username')
-    #         para.pop('sign')
-    #     except :
-    #         print Exception
-    #     else:
-    #         for k,v in para.items():
-    #             data.append(k+'='+v)
-    #         data.sort()
-    #         result = '&'.join(data)
-    # elif request.method == 'POST':
-    #     for k in request.POST:
-    #         if k == 'username' or k == 'sing':
-    #             continue
-    #         else:
-    #             para[k] = request.POST.get(k)
-    #     for k,v in para.items():
-    #         data.append(k+'='+v)
-    #     data.sort()
-    #     result = '&'.join(data)
-    #     salt = ''.join(random.sample(string.ascii_letters + string.digits, 5))
+    random = request.META.get('HTTP_RANDOM', None)
+    token = request.META.get('HTTP_TOKEN', None)
+    if request.method== "POST":
+        username = request.POST.get('username')
+    else:
+        username = request.GET.get('username')
+    user = User.objects.filter(username=username).first()
+    server_token = Token.objects.get(user=user).key
+    data = []
+    para = {}
+    if token == server_token:
+        if request.method == 'GET':
+            sign = request.GET.get('sign')
+            keys =request.GET.keys()
+            print keys
+            for k in keys:
+                if k == 'username' or k == 'sign':
+                    continue
+                else:
+                    data.append(k+'='+request.GET.get(k))
+                data.sort()
+                result = '&'.join(data)
+        else:
+            sign = request.POST.get('sign')
+            for k in request.POST.keys():
+                # if k == 'username' or k == 'sing':
+                #     continue
+                # else:
+                #     para[k] = request.POST.get(k)
+            # for k,v in para.items():
+                if k == 'username' or k == 'sign':
+                    continue
+                else:
+                    v = request.POST.get(k)
+                    data.append(k+'='+v)
+            data.sort()
+            result = '&'.join(data)
 
-    flag = True
+        sign_str = token+'para='+result+random
+        print sign_str
+        md5 = hashlib.md5()
+        md5.update(sign_str.encode(encoding="utf-8"))
+        server_sign = md5.hexdigest()
+        print server_sign
+        if sign == server_sign:
+            flag = True
     return flag
 
 
 #系统管理员登录
+@api_view(['POST'],)
 def register(request):
-    response = HttpResponse()
+    error_code = ''
+    token = ''
+    username = request.POST.get('username', None)
+    password = request.POST.get('password', None)
 
-    return response
+    if username and password:
+        password = base64.decodestring(password)[3:]
+        user = auth.authenticate(username=username, password=password)
+        if user:
+            token = Token.objects.get(user=user).key
+            error_code = '0'
+        else:
+            error_code = '10000'
+    else:
+        error_code = '10001'
+
+    js = {"error_code":error_code, "token":token}
+    return JsonResponse(js)
 
 #添加会议
 '''
@@ -72,7 +117,7 @@ def add_event(request):
 
     if request.method == 'POST':
         title = request.POST.get('title', None)
-        limit = request.POST.get('limit', None)
+        limit = request.POST.get('limit', 200)
         address = request.POST.get('address', None)
         status = request.POST.get('status', 0)
         time = request.POST.get('time', None)
@@ -275,12 +320,47 @@ def set_status(request):
           Guest.object.create
           Event.guest.add()
 '''
+@api_view(['POST'],)
 def add_guest(request):
+    data={}
     error_code = ''
-    message = ''
+    event_id = request.POST.get('id', None)
+    name = request.POST.get('name', None)
+    phone_number = request.POST.get('phone_number', None)
+    email = request.POST.get('email', None)
+    if event_id and name and phone_number:
+        if is_sign(request):
+            try:
+                event = Event.objects.get(id=event_id)
+                if Guest.objects.filter(phone_number=phone_number).exists():
+                    guest = Guest.objects.get(phone_number=phone_number)
+                    guest.name = name
+                    if email:
+                        guest.email = email
+                    guest.save()
+                else:
+                    guest = Guest.objects.create(phone_number=phone_number, name=name, email=email)
+                if Event.objects.filter(id=event_id,guest=guest).exists():
+                    error_code = '10005'
+                else:
+                    print event
+                    if event.guest.count() == event.limit:
+                        error_code = '10006'
+                    else:
+                        event.guest.add(guest)
+                        error_code = '0'
+                        data["event_id"] = event.id
+                        data["guest_id"] = guest.id
+            except Exception as e:
+                print e
+                error_code = '10004'
+        else:
+            error_code = '10011'
+    else:
+        error_code = '10001'
 
-    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
-    return HttpResponse(js)
+    js = {'data': data, 'error_code': error_code}
+    return JsonResponse(js)
 
 #查询会议嘉宾
 '''
@@ -294,12 +374,35 @@ def add_guest(request):
 数据操作：Guest.object.filter
           Event.object.value
 '''
+@api_view(['GET'])
 def get_guestlist(request):
     error_code = ''
-    message = ''
+    guest_list =[]
+    event_id = request.GET.get('event_id', None)
+    phone_number = request.GET.get('phone_number', None)
+    if is_sign(request):
+        if Event.objects.filter(id=event_id).exists():
+            if phone_number:
 
-    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
-    return HttpResponse(js)
+                if Event.objects.filter(id=event_id,guest__phone_number=phone_number).exists():
+                    guest = Guest.objects.values('id', 'name', 'phone_number', 'email').get(phone_number=phone_number)
+                    guest_list = [{"guest_id": guest['id'], "name": guest['name'],
+                                   "phone_number": guest['phone_number'], "email": guest['email']}]
+            else:
+                guest = Event.objects.get(id=event_id).guest.values('id', 'name', 'phone_number', 'email')
+
+                guest_list = [{"guest_id": guest[0]['id'], "name": guest[0]['name'],
+                               "phone_number": guest[0]['phone_number'], "email": guest[0]['email']}]
+
+            error_code = 0
+
+        else:
+            error_code = '10004'
+    else:
+        error_code = '10011'
+
+    js = {'guest_list': guest_list, 'error_code': error_code}
+    return JsonResponse(js)
 
 # 嘉宾签到
 '''
@@ -315,7 +418,7 @@ def get_guestlist(request):
 '''
 def sign(request):
     error_code = ''
-    message = ''
 
-    js = json.dumps({'event_detail': event_detail, 'error_code': error_code, 'message': message}, ensure_ascii=False)
-    return HttpResponse(js)
+
+    js = {'error_code': error_code}
+    return JsonResponse(js)
