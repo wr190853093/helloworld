@@ -6,6 +6,7 @@ from rest_framework.decorators import api_view
 import datetime
 import json
 import base64
+from django.db import connection
 from django.contrib import auth
 from rest_framework.authtoken.models import Token
 import hashlib
@@ -416,9 +417,36 @@ def get_guestlist(request):
 校验结果，按接口文档返回对应参数
 数据操作：原生sql
 '''
+@api_view(['POST'],)
 def sign(request):
     error_code = ''
+    if is_sign(request):
+        event_id = request.POST.get('id',None)
+        phone_number = request.POST.get('phone_number',None)
+        event = Event.objects.filter(id=event_id, guest__phone_number=phone_number)
+        guest_id = Guest.objects.filter(phone_number=phone_number).values('id').first()
+        if event.exists():
+            if event.status != '3':
+                sql = "select id,event_id,guest_id,sign_time from api_event_guest WHERE guest_id ='%s'  \
+                      and event_id = '%s' " %(guest_id, event_id)
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                data = cursor.fetchone()
+                data_dic = {'id':data[0], 'event_id':data[1], 'guest_id': data[2], 'sign_time':data[3]}
+                if data_dic['sign_time']:
+                    data_dic['sign_time'] = datetime.datetime.now()
+                    update_sql = "update api_event_guest set sign_time = '%s' " % data_dic['sign_time']
+                    if cursor.execute(update_sql) == 1:
+                        error_code = '0'
 
+                else:
+                    error_code = '10009'
+            else:
+                error_code = '10010'
+        else:
+            error_code = '10008'
+    else:
+        error_code = '10011'
 
     js = {'error_code': error_code}
     return JsonResponse(js)
