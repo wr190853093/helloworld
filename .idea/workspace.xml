@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c0e5e39-0cca-4895-9ae4-3f940c027614" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
-    </list>
+    <list default="true" id="1c0e5e39-0cca-4895-9ae4-3f940c027614" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +17,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="444" column="36" lean-forward="true" selection-start-line="444" selection-start-column="36" selection-end-line="444" selection-end-column="36" />
+            <state relative-caret-position="348">
+              <caret line="133" column="40" lean-forward="true" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
               <folding>
                 <element signature="e#14#62#0" expanded="true" />
                 <marker date="1522682101410" expanded="true" signature="12886:12961" ph="select id,ev... api_event_guest" />
@@ -29,7 +27,6 @@
                 <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
                 <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
                 <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-                <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
                 <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
               </folding>
             </state>
@@ -39,7 +36,7 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
+            <state relative-caret-position="399">
               <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
               <folding />
             </state>
@@ -136,7 +133,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,7 +167,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -234,9 +231,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1695279" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17167382" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32907802" sideWeight="0.5028612" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -271,6 +267,31 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#14#62#0" expanded="true" />
+            <marker date="1522682101410" expanded="true" signature="12886:12961" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="12886:12964" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="12886:12966" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
+            <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7056">
           <caret line="336" column="64" lean-forward="true" selection-start-line="336" selection-start-column="64" selection-end-line="336" selection-end-column="64" />
           <folding>
@@ -281,7 +302,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -307,7 +327,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -317,7 +336,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="903">
           <caret line="43" column="37" lean-forward="false" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -341,7 +359,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -367,7 +384,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -385,7 +401,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="903">
           <caret line="43" column="37" lean-forward="false" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -401,7 +416,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -419,7 +433,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="903">
           <caret line="43" column="37" lean-forward="false" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -435,7 +448,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -453,7 +465,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
@@ -522,7 +533,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="616">
           <caret line="43" column="37" lean-forward="false" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -544,7 +554,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2021">
           <caret line="129" column="1" lean-forward="true" selection-start-line="129" selection-start-column="1" selection-end-line="129" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -564,7 +573,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
+        <state relative-caret-position="399">
           <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
           <folding />
         </state>
@@ -572,8 +581,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="444" column="36" lean-forward="true" selection-start-line="444" selection-start-column="36" selection-end-line="444" selection-end-column="36" />
+        <state relative-caret-position="348">
+          <caret line="133" column="40" lean-forward="true" selection-start-line="133" selection-start-column="40" selection-end-line="133" selection-end-column="40" />
           <folding>
             <element signature="e#14#62#0" expanded="true" />
             <marker date="1522682101410" expanded="true" signature="12886:12961" ph="select id,ev... api_event_guest" />
@@ -582,7 +591,6 @@
             <marker date="1522682101410" expanded="true" signature="12886:12991" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13005" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="12886:13010" ph="select id,ev... api_event_guest" />
-            <marker date="1522682101410" expanded="true" signature="12886:13033" ph="select id,ev... api_event_guest" />
             <marker date="1522682101410" expanded="true" signature="13405:13448" ph="update api_e... " />
           </folding>
         </state>
